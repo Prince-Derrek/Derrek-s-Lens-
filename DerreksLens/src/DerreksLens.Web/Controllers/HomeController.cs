@@ -1,8 +1,9 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using DerreksLens.Web.Models;
-using DerreksLens.Application.Interfaces.Repositories;
 using DerreksLens.Application.DTOs.Posts;
+using DerreksLens.Application.Interfaces.Repositories;
+using DerreksLens.Core.Domain.Entities;
+using DerreksLens.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace DerreksLens.Web.Controllers;
 
@@ -17,12 +18,26 @@ public class HomeController : Controller
         _postRepository = postRepository;
     }
 
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    [HttpGet("category/{categorySlug}")]
+    public async Task<IActionResult> Index(string? categorySlug = null)
     {
-        // 1. Fetch Entities
-        var posts = await _postRepository.GetRecentPostsAsync(10);
+        IEnumerable<Post> posts;
+        ViewData["CurrentCategory"] = categorySlug;
 
-        // 2. Map to DTOs
+        if (string.IsNullOrEmpty(categorySlug))
+        {
+            // Get all (limit 10 for home)
+            posts = await _postRepository.GetRecentPostsAsync(10);
+            ViewData["Title"] = "Home";
+        }
+        else
+        {
+            // Get by category
+            posts = await _postRepository.GetPostsByCategoryAsync(categorySlug);
+            ViewData["Title"] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categorySlug.Replace("-", " "));
+        }
+
         var postDtos = posts.Select(p => new PostListDto
         {
             Title = p.Title,
