@@ -2,39 +2,78 @@
 @model IEnumerable<PostListDto>
 
 @{
-    ViewData["Title"] = "Home";
+    string currentCategory = ViewData["CurrentCategory"] as string;
+    string title = string.IsNullOrEmpty(currentCategory) ? "Latest Transmissions" : $"{currentCategory} Archives";
 }
 
-<div class="space-y-12">
-    <div class="text-center space-y-4 py-10">
-        <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-500">
-            Building in Public
+<div class="max-w-7xl mx-auto space-y-16">
+
+    <div class="relative py-12 md:py-20 text-center space-y-6">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">
+                @title
+            </span>
         </h1>
-        <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-            Documentation, experiments, and hot takes on the .NET ecosystem.
+        <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Exploring the intersection of complex systems, .NET architecture, and the developer journey.
         </p>
     </div>
 
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         @if (!Model.Any())
         {
-            <div class="col-span-full text-center py-20 bg-secondary/30 rounded-lg border border-secondary border-dashed">
-                <p class="text-xl text-slate-500">No posts found.</p>
-                <p class="text-sm text-slate-600 mt-2">The database is fresh.</p>
+            <div class="col-span-full py-32 text-center rounded-3xl border border-white/5 bg-white/5 backdrop-blur-sm">
+                <p class="text-2xl font-bold text-slate-500">No signals found.</p>
+                <p class="text-slate-400 mt-2">The frequency is silent in this sector.</p>
             </div>
         }
         else
         {
             @foreach (var post in Model)
             {
-                <article class="bg-secondary/50 border border-slate-700/50 rounded-xl overflow-hidden hover:border-accent/50 transition-all duration-300">
-                    <div class="p-6 space-y-4">
-                        <h2 class="text-xl font-bold text-white hover:text-accent transition-colors">
-                            @post.Title
+                <article class="group relative flex flex-col h-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5">
+
+                    <div class="aspect-video bg-slate-900 relative overflow-hidden">
+                        @if (!string.IsNullOrEmpty(post.CoverImageUrl))
+                        {
+                            <img src="@post.CoverImageUrl" alt="@post.Title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" />
+                        }
+                        else
+                        {
+                            <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-30 font-mono text-4xl font-bold text-white">
+                                &lt;/&gt;
+                            </div>
+                        }
+
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 text-xs font-bold tracking-wide text-white uppercase bg-black/50 backdrop-blur-md border border-white/20 rounded-full">
+                                @post.CategoryName
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col flex-grow p-6 md:p-8">
+                        <div class="flex items-center gap-2 text-xs font-mono text-accent mb-3">
+                            <span>@post.PublishedDate.ToString("yyyy.MM.dd")</span>
+                            <span class="text-slate-600">//</span>
+                            <span>@post.AuthorName</span>
+                        </div>
+
+                        <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-accent transition-colors line-clamp-2">
+                            <a href="/post/@post.Slug" class="before:absolute before:inset-0">
+                                @post.Title
+                            </a>
                         </h2>
-                        <p class="text-slate-400 text-sm">@post.Summary</p>
-                        <div class="text-xs text-slate-500">
-                            By @post.AuthorName in <span class="text-accent">@post.CategoryName</span>
+
+                        <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow">
+                            @post.Summary
+                        </p>
+
+                        <div class="flex items-center text-sm font-medium text-white group-hover:translate-x-2 transition-transform duration-300">
+                            Read Article <span class="ml-2 text-accent">&rarr;</span>
                         </div>
                     </div>
                 </article>

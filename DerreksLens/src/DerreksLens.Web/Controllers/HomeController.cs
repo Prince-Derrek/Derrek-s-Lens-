@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DerreksLens.Web.Models;
 using DerreksLens.Application.Interfaces.Repositories;
 using DerreksLens.Application.DTOs.Posts;
+using DerreksLens.Core.Domain.Entities;
 
 namespace DerreksLens.Web.Controllers;
 
@@ -17,24 +18,37 @@ public class HomeController : Controller
         _postRepository = postRepository;
     }
 
+    // 1. HOME PAGE (Route: /)
+    // Uses the default convention from Program.cs
     public async Task<IActionResult> Index()
     {
-        // 1. Fetch Entities
+        ViewData["Title"] = "Home";
+        ViewData["CurrentCategory"] = null;
+
+        // Fetch recent posts
         var posts = await _postRepository.GetRecentPostsAsync(10);
 
-        // 2. Map to DTOs
-        var postDtos = posts.Select(p => new PostListDto
-        {
-            Title = p.Title,
-            Slug = p.Slug,
-            Summary = p.Summary,
-            AuthorName = p.Author.Username,
-            CategoryName = p.Category.Name,
-            PublishedDate = p.CreatedAt,
-            CoverImageUrl = p.CoverImageUrl
-        }).ToList();
+        var model = MapToDto(posts);
+        return View(model);
+    }
 
-        return View(postDtos);
+    // 2. CATEGORY PAGE (Route: /category/{slug})
+    // Uses specific Attribute Routing
+    [HttpGet("category/{categorySlug}")]
+    public async Task<IActionResult> Category(string categorySlug)
+    {
+        if (string.IsNullOrEmpty(categorySlug)) return RedirectToAction(nameof(Index));
+
+        ViewData["Title"] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categorySlug.Replace("-", " "));
+        ViewData["CurrentCategory"] = categorySlug;
+
+        // Fetch filtered posts
+        var posts = await _postRepository.GetPostsByCategoryAsync(categorySlug);
+
+        var model = MapToDto(posts);
+
+        // Reuse the Index view because the UI is the same
+        return View("Index", model);
     }
 
     public IActionResult Privacy()
@@ -46,5 +60,20 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    // Helper to avoid duplicate mapping code
+    private List<PostListDto> MapToDto(IEnumerable<Post> posts)
+    {
+        return posts.Select(p => new PostListDto
+        {
+            Title = p.Title,
+            Slug = p.Slug,
+            Summary = p.Summary,
+            AuthorName = p.Author.Username,
+            CategoryName = p.Category.Name,
+            PublishedDate = p.CreatedAt,
+            CoverImageUrl = p.CoverImageUrl
+        }).ToList();
     }
 }
