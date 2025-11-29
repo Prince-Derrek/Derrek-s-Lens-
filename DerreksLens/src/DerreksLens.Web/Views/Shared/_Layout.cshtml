@@ -19,32 +19,28 @@
                         &lt;Derrek's Lens /&gt;
                     </a>
                 </div>
-                
+
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="/" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">The Journey</a>
                         <a href="/lab" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">The Lab</a>
-                        <a href="/login" class="bg-secondary hover:bg-slate-700 text-white px-4 py-2 rounded-md text-sm font-medium border border-slate-700 transition-colors">Login</a>
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <span class="text-accent text-sm font-mono px-3">@User.Identity.Name</span>
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
+                                <button type="submit" class="bg-secondary hover:bg-red-900/50 text-white px-4 py-2 rounded-md text-sm font-medium border border-slate-700 transition-colors">
+                                    Logout
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="/Auth/Login" class="bg-secondary hover:bg-slate-700 text-white px-4 py-2 rounded-md text-sm font-medium border border-slate-700 transition-colors">Login</a>
+                        }
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="ml-10 flex items-baseline space-x-4">
-            <a href="/" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium">The Journey</a>
-
-            @if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                <span class="text-accent text-sm font-mono px-3">@User.Identity.Name</span>
-                <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
-                    <button type="submit" class="bg-secondary hover:bg-red-900/50 text-white px-4 py-2 rounded-md text-sm font-medium border border-slate-700 transition-colors">
-                        Logout
-                    </button>
-                </form>
-            }
-            else
-            {
-                <a href="/Auth/Login" class="bg-secondary hover:bg-slate-700 text-white px-4 py-2 rounded-md text-sm font-medium border border-slate-700 transition-colors">Login</a>
-            }
         </div>
     </nav>
 
