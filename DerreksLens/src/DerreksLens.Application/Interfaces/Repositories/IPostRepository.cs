@@ -10,6 +10,7 @@ namespace DerreksLens.Application.Interfaces.Repositories
         Task<Post?> GetByIdAsync(int id);
         Task<IEnumerable<Post>> GetRecentPostsAsync(int count);
         Task<IEnumerable<Post>> GetAllPublishedAsync();
+        Task<IEnumerable<Post>> GetPostsByCategoryAsync(string categorySlug);
         Task AddAsync(Post post);
         Task UpdateAsync(Post post);
         Task DeleteAsync(Post post);

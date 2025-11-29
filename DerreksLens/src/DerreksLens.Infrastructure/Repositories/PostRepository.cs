@@ -51,6 +51,16 @@ namespace DerreksLens.Infrastructure.Repositories
                .ToListAsync();
         }
 
+        public async Task<IEnumerable<Post>> GetPostsByCategoryAsync(string categorySlug)
+        {
+            return await _context.Posts
+                .Include(p => p.Category)
+                .Include(p => p.Author)
+                .Where(p => p.Status == PostStatus.Published && p.Category.Slug == categorySlug)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Post post)
         {
             await _context.Posts.AddAsync(post);
