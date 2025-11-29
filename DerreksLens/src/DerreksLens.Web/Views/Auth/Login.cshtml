@@ -1,0 +1,38 @@
+﻿@model DerreksLens.Application.DTOs.Auth.LoginDto
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-secondary/50 p-8 rounded-xl border border-slate-700">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-white">Welcome back</h2>
+            <p class="mt-2 text-center text-sm text-slate-400">
+                Or <a asp-action="Register" class="font-medium text-accent hover:text-accent/80">start your journey here</a>
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger text-sm text-center"></div>
+
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label asp-for="Email" class="sr-only">Email address</label>
+                    <input asp-for="Email" type="email" class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-600 bg-background placeholder-slate-500 text-white focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm" placeholder="Email address" />
+                    <span asp-validation-for="Email" class="text-danger text-xs"></span>
+                </div>
+                <div>
+                    <label asp-for="Password" class="sr-only">Password</label>
+                    <input asp-for="Password" type="password" class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-600 bg-background placeholder-slate-500 text-white focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm" placeholder="Password" />
+                    <span asp-validation-for="Password" class="text-danger text-xs"></span>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-background bg-accent hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent focus:ring-offset-slate-900 transition-colors">
+                    Sign in
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
