@@ -20,6 +20,7 @@ namespace DerreksLens.Infrastructure
             // 2. Register Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
             return services;
         }
