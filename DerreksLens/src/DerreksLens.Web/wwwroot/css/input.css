@@ -1,5 +1,4 @@
-﻿/* src/DerreksLens.Web/wwwroot/css/input.css */
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -7,8 +6,19 @@
     body {
         @apply bg-background text-text font-sans antialiased;
     }
+}
 
-    h1, h2, h3, h4, h5, h6 {
-        @apply font-bold text-white tracking-tight;
+@layer components {
+    .nav-link {
+        @apply text-slate-400 hover:text-white text-sm font-medium transition-colors relative py-1;
     }
+
+        .nav-link.active {
+            @apply text-white;
+        }
+
+            .nav-link.active::after {
+                content: '';
+                @apply absolute bottom-0 left-0 w-full h-0.5 bg-accent shadow-[0_0_8px_rgba(56,189,248,0.8)];
+            }
 }

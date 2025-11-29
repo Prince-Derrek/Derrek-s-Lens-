@@ -1,9 +1,9 @@
-using DerreksLens.Application.DTOs.Posts;
-using DerreksLens.Application.Interfaces.Repositories;
-using DerreksLens.Core.Domain.Entities;
-using DerreksLens.Web.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using DerreksLens.Web.Models;
+using DerreksLens.Application.Interfaces.Repositories;
+using DerreksLens.Application.DTOs.Posts;
+using DerreksLens.Core.Domain.Entities;
 
 namespace DerreksLens.Web.Controllers;
 
@@ -18,38 +18,37 @@ public class HomeController : Controller
         _postRepository = postRepository;
     }
 
-    [HttpGet]
-    [HttpGet("category/{categorySlug}")]
-    public async Task<IActionResult> Index(string? categorySlug = null)
+    // 1. HOME PAGE (Route: /)
+    // Uses the default convention from Program.cs
+    public async Task<IActionResult> Index()
     {
-        IEnumerable<Post> posts;
+        ViewData["Title"] = "Home";
+        ViewData["CurrentCategory"] = null;
+
+        // Fetch recent posts
+        var posts = await _postRepository.GetRecentPostsAsync(10);
+
+        var model = MapToDto(posts);
+        return View(model);
+    }
+
+    // 2. CATEGORY PAGE (Route: /category/{slug})
+    // Uses specific Attribute Routing
+    [HttpGet("category/{categorySlug}")]
+    public async Task<IActionResult> Category(string categorySlug)
+    {
+        if (string.IsNullOrEmpty(categorySlug)) return RedirectToAction(nameof(Index));
+
+        ViewData["Title"] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categorySlug.Replace("-", " "));
         ViewData["CurrentCategory"] = categorySlug;
 
-        if (string.IsNullOrEmpty(categorySlug))
-        {
-            // Get all (limit 10 for home)
-            posts = await _postRepository.GetRecentPostsAsync(10);
-            ViewData["Title"] = "Home";
-        }
-        else
-        {
-            // Get by category
-            posts = await _postRepository.GetPostsByCategoryAsync(categorySlug);
-            ViewData["Title"] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categorySlug.Replace("-", " "));
-        }
+        // Fetch filtered posts
+        var posts = await _postRepository.GetPostsByCategoryAsync(categorySlug);
 
-        var postDtos = posts.Select(p => new PostListDto
-        {
-            Title = p.Title,
-            Slug = p.Slug,
-            Summary = p.Summary,
-            AuthorName = p.Author.Username,
-            CategoryName = p.Category.Name,
-            PublishedDate = p.CreatedAt,
-            CoverImageUrl = p.CoverImageUrl
-        }).ToList();
+        var model = MapToDto(posts);
 
-        return View(postDtos);
+        // Reuse the Index view because the UI is the same
+        return View("Index", model);
     }
 
     public IActionResult Privacy()
@@ -61,5 +60,20 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    // Helper to avoid duplicate mapping code
+    private List<PostListDto> MapToDto(IEnumerable<Post> posts)
+    {
+        return posts.Select(p => new PostListDto
+        {
+            Title = p.Title,
+            Slug = p.Slug,
+            Summary = p.Summary,
+            AuthorName = p.Author.Username,
+            CategoryName = p.Category.Name,
+            PublishedDate = p.CreatedAt,
+            CoverImageUrl = p.CoverImageUrl
+        }).ToList();
     }
 }
