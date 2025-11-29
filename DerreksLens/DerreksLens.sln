@@ -1,9 +1,45 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
+VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerreksLens.Core", "src\DerreksLens.Core\DerreksLens.Core.csproj", "{74022606-265F-44DB-9208-AA7BE4CD570E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerreksLens.Application", "src\DerreksLens.Application\DerreksLens.Application.csproj", "{56A16C52-7B2F-46F0-A298-FD408B4A0C2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerreksLens.Infrastructure", "src\DerreksLens.Infrastructure\DerreksLens.Infrastructure.csproj", "{3895F5AD-ED57-411B-8D13-131E5D808560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerreksLens.Web", "src\DerreksLens.Web\DerreksLens.Web.csproj", "{F68F8FC8-F62F-4843-9547-FECE2FB40721}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerreksLens.Test", "tests\DerreksLens.Test\DerreksLens.Test.csproj", "{F637D9BE-B7B6-44AF-9ED1-05A02F76A3B2}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74022606-265F-44DB-9208-AA7BE4CD570E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74022606-265F-44DB-9208-AA7BE4CD570E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74022606-265F-44DB-9208-AA7BE4CD570E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74022606-265F-44DB-9208-AA7BE4CD570E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A16C52-7B2F-46F0-A298-FD408B4A0C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A16C52-7B2F-46F0-A298-FD408B4A0C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A16C52-7B2F-46F0-A298-FD408B4A0C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A16C52-7B2F-46F0-A298-FD408B4A0C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3895F5AD-ED57-411B-8D13-131E5D808560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3895F5AD-ED57-411B-8D13-131E5D808560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3895F5AD-ED57-411B-8D13-131E5D808560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3895F5AD-ED57-411B-8D13-131E5D808560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F68F8FC8-F62F-4843-9547-FECE2FB40721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F68F8FC8-F62F-4843-9547-FECE2FB40721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F68F8FC8-F62F-4843-9547-FECE2FB40721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F68F8FC8-F62F-4843-9547-FECE2FB40721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F637D9BE-B7B6-44AF-9ED1-05A02F76A3B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F637D9BE-B7B6-44AF-9ED1-05A02F76A3B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F637D9BE-B7B6-44AF-9ED1-05A02F76A3B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F637D9BE-B7B6-44AF-9ED1-05A02F76A3B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
