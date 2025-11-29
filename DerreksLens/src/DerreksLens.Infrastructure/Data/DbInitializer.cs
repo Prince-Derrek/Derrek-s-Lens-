@@ -26,6 +26,16 @@ namespace DerreksLens.Infrastructure.Data
                 return;
             }
 
+            if (!await context.Categories.AnyAsync())
+            {
+                await context.Categories.AddRangeAsync(
+                    new Category { Name = "The Lab", Slug = "the-lab", Description = "Code and Experiments" },
+                    new Category { Name = "The Journey", Slug = "the-journey", Description = "Growth" },
+                    new Category { Name = "Hot Takes", Slug = "hot-takes", Description = "Opinions" }
+                );
+                await context.SaveChangesAsync();
+            }
+
             logger.LogInformation("🚀 No Admin found. Seeding from Configuration...");
 
             // 3. Get Credentials from Secrets (with fallbacks if missing)
