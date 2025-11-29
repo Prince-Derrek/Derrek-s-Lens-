@@ -1,0 +1,14 @@
+﻿/* src/DerreksLens.Web/wwwroot/css/input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-background text-text font-sans antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold text-white tracking-tight;
+    }
+}
