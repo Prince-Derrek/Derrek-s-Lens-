@@ -35,7 +35,6 @@ namespace DerreksLens.Infrastructure.Repositories
         public async Task<IEnumerable<Post>> GetRecentPostsAsync(int count)
         {
             return await _context.Posts
-                .Where(p => p.Status == PostStatus.Published)
                 .Include(p => p.Author)
                 .Include(p => p.Category)
                 .OrderByDescending(p => p.CreatedAt)
